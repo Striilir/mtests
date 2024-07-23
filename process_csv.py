@@ -19,7 +19,7 @@ def write_csv(data, filename):
         writer = csv.DictWriter(outfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         writer.writeheader()
         for row in data:
-            filtered_row = {field: row[field] for field in fieldnames}
+            filtered_row = {field: row.get(field, '') for field in fieldnames}
             writer.writerow(filtered_row)
 
 def clean_input_data(data):
@@ -56,8 +56,8 @@ def streak_user(data):
                             current_streak += 1
                             if current_streak % 5 == 0:
                                 lives = min(lives + 1, 2)
-                        row['Serie'] = current_streak
-                        row['Vie'] = lives
+                        row['Serie'] = str(current_streak)
+                        row['Vie'] = str(lives)
             if not exercice_done:
                 if current_streak > 0:
                     lives -= 1

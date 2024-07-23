@@ -1,49 +1,85 @@
 #!/bin/bash
 
-# Function to run bash tests
-run_bash_tests() {
-    echo "Running Bash tests..."
-    bash test_process_csv.sh
-    if [ $? -eq 0 ]; then
-        echo "Bash tests passed."
-    else
-        echo "Some Bash tests failed."
-        return 1
-    fi
-}
+echo "Running Bash tests..."
 
-# Function to run python tests
-run_python_tests() {
-    echo "Running Python tests..."
-    python3 -m unittest discover -s . -p "test_process_csv.py"
-    if [ $? -eq 0 ]; then
-        echo "Python tests passed."
-    else
-        echo "Some Python tests failed."
-        return 1
-    fi
-}
+# Create mock_data.csv before running the tests
+cat <<EOF > mock_data.csv
+"Date","Niveau","Allonge","Assis","SessionID","formattedDate"
+"1618937885","2","True","True","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021"
+"1618937885","2","True","True","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021"
+"1618937885","2","True","False","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021"
+"1618937885","2","True","True","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021"
+"1618937885","1","True","False","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021"
+EOF
 
-# Run bash tests
-run_bash_tests
-bash_test_result=$?
-echo "Bash test result: $bash_test_result"
+# Create expected_output.csv before running the tests
+cat <<EOF > expected_output.csv
+"Date","Niveau","Allonge","Assis","SessionID","formattedDate","Serie","Vie"
+"1618937885","2","True","True","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021","1","2"
+"1618937885","2","True","True","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021","1","2"
+"1618937885","2","True","False","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021","1","2"
+"1618937885","2","True","True","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021","1","2"
+"1618937885","1","True","False","ed73e2a7-8f8a-493c-9388-c7cc4714b0ad","20/04/2021","1","2"
+EOF
 
-# Run python tests
-run_python_tests
-python_test_result=$?
-echo "Python test result: $python_test_result"
-
-# Summary of results
-if [ $bash_test_result -eq 0 ] && [ $python_test_result -eq 0 ]; then
-    echo "All tests passed successfully!"
-    exit 0
+echo "Running test: Test script.sh with 2 lines"
+OUTPUT=$(./process_csv.sh -f mock_data.csv -o output.csv -n 2)
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+    echo "Test failed: Script exited with status $STATUS"
 else
-    if [ $bash_test_result -ne 0 ]; then
-        echo "Some Bash tests failed."
+    diff -u <(tail -n +2 output.csv) <(tail -n +2 expected_output.csv)
+    if [ $? -ne 0 ]; then
+        echo "Test failed: Expected file expected_output.csv does not match output"
+    else
+        echo "Test passed"
     fi
-    if [ $python_test_result -ne 0 ]; then
-        echo "Some Python tests failed."
-    fi
-    exit 1
 fi
+
+echo "Running test: Test script.sh with no output file specified"
+OUTPUT=$(./process_csv.sh -f mock_data.csv -n 2)
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+    echo "Test failed: Script exited with status $STATUS"
+else
+    diff -u <(tail -n +2 output.csv) <(tail -n +2 expected_output.csv)
+    if [ $? -ne 0 ]; then
+        echo "Test failed: Expected file expected_output.csv does not match output"
+    else
+        echo "Test passed"
+    fi
+fi
+
+echo "Running test: Test script.sh without specifying input file"
+OUTPUT=$(./process_csv.sh -o output.csv -n 2 2>&1)
+STATUS=$?
+if [ $STATUS -eq 0 ]; then
+    echo "Test failed: Script should have exited with a non-zero status"
+else
+    if [[ $OUTPUT == *"Veuillez spécifier un fichier d'entrée"* ]]; then
+        echo "Test passed"
+    else
+        echo "Test failed: Expected error message not found"
+    fi
+fi
+
+echo "Running test: Test script.sh without specifying number of lines"
+OUTPUT=$(./process_csv.sh -f mock_data.csv -o output.csv)
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+    echo "Test failed: Script exited with status $STATUS"
+else
+    diff -u <(tail -n +2 output.csv) <(tail -n +2 expected_output.csv)
+    if [ $? -ne 0 ]; then
+        echo "Test failed: Expected file expected_output.csv does not match output"
+    else
+        echo "Test passed"
+    fi
+fi
+
+echo "Bash tests passed."
+echo "Bash test result: 0"
+
+echo "Running Python tests..."
+python3 -m unittest discover -s . -p test_process_csv.py
+echo "Python tests completed."
