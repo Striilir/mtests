@@ -19,6 +19,10 @@ Assurez-vous d'avoir les éléments suivants installés sur votre système :
 - Bash
 - Python 3
 - Avoir rendu les scripts exécutables avec `chmod +x nom_du_script.sh`
+```bash
+chmod +x process_csv.sh
+chmod +x run_tests.sh
+```
 
 ## Instructions
 
