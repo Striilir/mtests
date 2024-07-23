@@ -2,7 +2,7 @@
 
 ## Description
 
-Le projet comprend un script Bash pour traiter un fichier CSV d'exercices et calculer des séries pour chaque utilisateur. On retrouve aussi des tests pour assurer la qualité du script.
+Le projet comprend deux scripts Bash et Python pour traiter un fichier CSV d'exercices et calculer des séries pour chaque utilisateur. On retrouve aussi des tests pour assurer la qualité des scripts.
 
 ## Contenu
 
