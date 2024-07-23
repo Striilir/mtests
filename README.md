@@ -11,7 +11,6 @@ Le projet comprend deux scripts Bash et Python pour traiter un fichier CSV d'exe
 - `run_tests.sh` : Un script pour exécuter les tests unitaires et vérifier les résultats.
 - `Enregistrement.csv` : Un fichier CSV à traiter.
 - `test_process_csv.py` : Un script de tests unitaires pour vérifier le bon fonctionnement du traitement du CSV.
-- `test_process_csv.sh` : Un script pour lancer les tests unitaires.
 
 ### Prérequis avant de lancer les scripts
 
