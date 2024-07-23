@@ -13,13 +13,13 @@ def read_csv(filename):
 def write_csv(data, filename):
     os.makedirs(os.path.dirname(filename) or '.', exist_ok=True)
     
-    fieldnames = ['Date', 'Niveau', 'Allonge', 'Assis', 'SessionID', 'formattedDate', 'Serie', 'Vie']
+    fieldnames = ['Date', 'Niveau', 'Allonge', 'Assis', 'SessionID', 'formattedDate', 'Serie']
     
     with open(filename, mode='w', newline='') as outfile:
         writer = csv.DictWriter(outfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
         writer.writeheader()
         for row in data:
-            filtered_row = {field: row.get(field, '') for field in fieldnames}
+            filtered_row = {field: row[field] for field in fieldnames}
             writer.writerow(filtered_row)
 
 def clean_input_data(data):
@@ -57,7 +57,6 @@ def streak_user(data):
                             if current_streak % 5 == 0:
                                 lives = min(lives + 1, 2)
                         row['Serie'] = str(current_streak)
-                        row['Vie'] = str(lives)
             if not exercice_done:
                 if current_streak > 0:
                     lives -= 1
