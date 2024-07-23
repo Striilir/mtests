@@ -4,7 +4,7 @@
 
 Le projet comprend deux scripts Bash et Python pour traiter un fichier CSV d'exercices et calculer des séries pour chaque utilisateur. On retrouve aussi des tests pour assurer la qualité des scripts.
 
-## Contenu
+### Contenu du répo
 
 - `process_csv.sh` : Le script principal qui permet de lancer le traitement des données.
 - `process_csv.py`: Un script en Python qui fait le gros du traitement du CSV, calcul des séries et des vies.
@@ -13,7 +13,7 @@ Le projet comprend deux scripts Bash et Python pour traiter un fichier CSV d'exe
 - `test_process_csv.py` : Un script de tests unitaires pour vérifier le bon fonctionnement du traitement du CSV.
 - `test_process_csv.sh` : Un script pour lancer les tests unitaires.
 
-## Prérequis
+### Prérequis avant de lancer les scripts
 
 Assurez-vous d'avoir les éléments suivants installés sur votre système :
 
@@ -35,15 +35,9 @@ Exécutez le script principal `process_csv.sh` avec le fichier de test généré
 ```bash
 ./process_csv.sh -f Enregistrement.csv -o output.csv
 ```
-### Résultats du script
-Le script crée un fichier output.csv où les résultats des séries calculées sont enregistrés.
 
 ### Exécuter les tests unitaires
 Exécutez le script de test unitaire run_tests.sh pour vérifier les résultats :
 ```bash
 ./run_tests.sh
 ```
-
-### Résultats des tests
-Format des résultats de tests :
-C'est tout pété pour l'instant
