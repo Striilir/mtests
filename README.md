@@ -46,16 +46,4 @@ Exécutez le script de test unitaire run_tests.sh pour vérifier les résultats 
 
 ### Résultats des tests
 Format des résultats de tests :
-
-### Résultats du script
-Le script crée un fichier output.csv où les résultats des séries calculées sont enregistrés.
-
-### Exécuter les tests unitaires
-Exécutez le script de test unitaire run_tests.sh pour vérifier les résultats :
-```bash
-./run_tests.sh
-```
-
-### Résultats des tests
-Format des résultats de tests :
-
+C'est tout pété pour l'instant
